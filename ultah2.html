@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBD Spesial Untukmu!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary: #ff758c;
+            --secondary: #ff7eb3;
+            --accent: #00f2fe;
+            --bg-gradient: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradient);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            color: #444;
+            position: relative;
+        }
+
+        /* --- ANIMASI NAMA RUNNING TEXT --- */
+        .bg-name-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-name {
+            position: absolute;
+            font-size: 5vw;
+            font-weight: 900;
+            white-space: nowrap;
+            opacity: 0.15;
+            animation: moveRight 10s linear infinite;
+        }
+
+        @keyframes moveRight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100vw); }
+        }
+
+        /* --- ANIMASI FOTO BERTERBANGAN --- */
+        .floating-photo {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            border: 4px solid white;
+            object-fit: cover;
+            z-index: 2;
+            opacity: 0.5;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: flyUp 10s linear forwards;
+        }
+
+        @keyframes flyUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- BALON --- */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            z-index: 3;
+            opacity: 0.7;
+            animation: flyBalloon 8s linear forwards;
+        }
+
+        @keyframes flyBalloon {
+            0% { transform: translateY(0) rotate(0); }
+            100% { transform: translateY(-120vh) rotate(20deg); }
+        }
+
+        /* --- CARD --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 35px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.7);
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            /* Card langsung muncul tanpa nunggu input nama */
+            display: block; 
+            animation: popIn 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .photo-frame {
+            width: 130px;
+            height: 130px;
+            margin: -90px auto 20px;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        h1 { font-family: 'Pacifico', cursive; color: #d63384; font-size: 2.2rem; margin: 10px 0; }
+        
+        .love-container { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
+        .love-icon { font-size: 2.5rem; cursor: pointer; color: #ccc; transition: 0.3s; }
+        .love-icon.active { color: #ff4757; transform: scale(1.2); }
+        
+        .btn { 
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white; border: none; padding: 14px 35px; border-radius: 50px; 
+            font-weight: bold; cursor: pointer; display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-name-container">
+        <div class="bg-name" style="top: 15%; animation-duration: 7s; color: #ff00ea;">Yosinur Indahsari</div>
+        <div class="bg-name" style="top: 40%; animation-duration: 10s; color: #00d2ff; animation-delay: -2s;">Yosinur Indahsari</div>
+        <div class="bg-name" style="top: 65%; animation-duration: 8s; color: #ff00ea; animation-delay: -5s;">Yosinur Indahsari</div>
+        <div class="bg-name" style="top: 85%; animation-duration: 12s; color: #00d2ff; animation-delay: -1s;">Yosinur Indahsari</div>
+    </div>
+
+    <div class="container" id="mainCard">
+        <div class="photo-frame">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300" alt="Foto">
+        </div>
+        <h1 id="greeting">Hai, Yosinur! ✨</h1>
+        <p id="stepMessage">Ada pesan spesial buat kamu...</p>
+        
+        <div id="interactionZone">
+            <p>Tap 4 Hati! ❤️</p>
+            <div class="love-container">
+                <span class="love-icon" onclick="hitLove(this)">❤</span>
+                <span class="love-icon" onclick="hitLove(this)">❤</span>
+                <span class="love-icon" onclick="hitLove(this)">❤</span>
+                <span class="love-icon" onclick="hitLove(this)">❤</span>
+            </div>
+        </div>
+
+        <button class="btn" id="nextBtn" onclick="showBirthday()">Klik Lanjut ✨</button>
+    </div>
+
+    <script>
+        // Nama sudah langsung diset di sini
+        let userName = "Yosinur"; 
+        let loveCount = 0;
+        const myPhotoLink = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150";
+
+        function createFloatingPhoto() {
+            const img = document.createElement('img');
+            img.src = myPhotoLink;
+            img.className = 'floating-photo';
+            img.style.left = Math.random() * 90 + 'vw';
+            img.style.animationDuration = (Math.random() * 5 + 7) + 's';
+            document.body.appendChild(img);
+            setTimeout(() => img.remove(), 12000);
+        }
+
+        function createBalloon() {
+            const b = document.createElement('div');
+            b.className = 'balloon';
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 70%)`;
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 8000);
+        }
+
+        setInterval(createFloatingPhoto, 2000);
+        setInterval(createBalloon, 1500); 
+
+        function hitLove(el) {
+            if (!el.classList.contains('active')) {
+                el.classList.add('active');
+                loveCount++;
+                if (loveCount === 4) {
+                    document.getElementById('nextBtn').style.display = 'inline-block';
+                }
+            }
+        }
+
+        async function showBirthday() {
+            document.getElementById('interactionZone').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('stepMessage').innerHTML = `<b>Happy Birthday, ${userName}!</b> 🎂<br>Semoga panjang umur, sehat selalu, dan semua impianmu tercapai!`;
+            
+            setTimeout(async () => {
+                const { value: kado } = await Swal.fire({
+                    title: 'Ciee yang ultah...',
+                    text: "Mau kado nggak nih?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Mau!',
+                    cancelButtonText: 'Enggak',
+                    confirmButtonColor: '#ff758c'
+                });
+                if (kado) {
+                    Swal.fire({
+                        title: 'Gajadi deh!',
+                        text: 'Soalnya kamu bau wlee 😜',
+                        imageUrl: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndnB1ZzRyeG53bm5pZzRyeG53bm5pZzRyeG53bm5pZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L95W4wv8nNb9STQNdx/giphy.gif',
+                        imageWidth: 200,
+                        confirmButtonText: 'Canda Wkwk :v'
+                    }).then(() => {
+                        Swal.fire({
+                            title: 'OK!',
+                            text: 'Kirim jawabannya ke WhatsApp aku ya!',
+                            icon: 'success'
+                        }).then(() => {
+                            window.location.href = `https://wa.me/628123456789?text=Makasih%20udah%20ucapin%20${userName}%20ultah%20><`;
+                        });
+                    });
+                } else {
+                    Swal.fire('Yaudah kalau gamau :P');
+                }
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
